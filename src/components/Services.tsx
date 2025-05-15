@@ -1,5 +1,5 @@
 
-import { Palette, Spa, Face, Lipstick } from "lucide-react";
+import { Palette, Flower, User, CircleUser } from "lucide-react";
 
 const ServiceCard = ({ title, description, icon: Icon, delay = 0 }) => {
   return (
@@ -21,19 +21,19 @@ const ServiceCard = ({ title, description, icon: Icon, delay = 0 }) => {
 const Services = () => {
   const services = [
     {
-      icon: Face,
+      icon: CircleUser,
       title: "Facial Treatments",
       description: "Customized facials targeting specific skin concerns, from hydration to anti-aging solutions.",
       delay: 0.2
     },
     {
-      icon: Spa,
+      icon: Flower,
       title: "Skin Therapy",
       description: "Advanced skin therapies including microdermabrasion, chemical peels, and LED treatments.",
       delay: 0.3
     },
     {
-      icon: Lipstick,
+      icon: User,
       title: "Makeup Services",
       description: "Professional makeup application for special events, photoshoots, or everyday glam.",
       delay: 0.4
