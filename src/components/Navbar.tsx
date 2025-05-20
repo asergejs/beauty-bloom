@@ -33,7 +33,7 @@ const Navbar = () => {
       <div className="container-custom">
         <div className="flex items-center justify-between">
           <a href="#" className="text-2xl font-serif font-medium text-beauty-800">
-            Bella Beauty
+            Serenity Beauty
           </a>
           
           <div className="hidden md:flex items-center space-x-8">
@@ -41,16 +41,16 @@ const Navbar = () => {
               Services
             </a>
             <a href="#about" className="text-sm font-medium hover:text-beauty-500 transition-colors">
-              About
+              About Sofia
             </a>
             <a href="#testimonials" className="text-sm font-medium hover:text-beauty-500 transition-colors">
-              Testimonials
+              Success Stories
             </a>
             <a href="#contact" className="text-sm font-medium hover:text-beauty-500 transition-colors">
               Contact
             </a>
             <Button size="sm" className="bg-beauty-500 hover:bg-beauty-600">
-              Book Now
+              Book Consultation
             </Button>
           </div>
           
@@ -78,14 +78,14 @@ const Navbar = () => {
                 className="text-sm font-medium hover:text-beauty-500 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                About
+                About Sofia
               </a>
               <a 
                 href="#testimonials" 
                 className="text-sm font-medium hover:text-beauty-500 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Testimonials
+                Success Stories
               </a>
               <a 
                 href="#contact" 
@@ -99,7 +99,7 @@ const Navbar = () => {
                 className="bg-beauty-500 hover:bg-beauty-600 w-full"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Book Now
+                Book Consultation
               </Button>
             </div>
           </div>

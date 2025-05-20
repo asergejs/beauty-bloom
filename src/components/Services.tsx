@@ -22,26 +22,26 @@ const Services = () => {
   const services = [
     {
       icon: CircleUser,
-      title: "Facial Treatments",
-      description: "Customized facials targeting specific skin concerns, from hydration to anti-aging solutions.",
+      title: "Signature Facial Treatments",
+      description: "Experience our award-winning facial treatments using organic ingredients. Our signature rose petal facial leaves skin glowing for weeks.",
       delay: 0.2
     },
     {
       icon: Flower,
-      title: "Skin Therapy",
-      description: "Advanced skin therapies including microdermabrasion, chemical peels, and LED treatments.",
+      title: "Advanced Skin Therapy",
+      description: "Transform your complexion with our state-of-the-art treatments including diamond microdermabrasion and custom-formulated chemical peels.",
       delay: 0.3
     },
     {
       icon: User,
-      title: "Makeup Services",
-      description: "Professional makeup application for special events, photoshoots, or everyday glam.",
+      title: "Professional Makeup Artistry",
+      description: "From natural everyday looks to glamorous event makeup, our certified makeup artists use premium products for flawless, long-lasting results.",
       delay: 0.4
     },
     {
       icon: Palette,
-      title: "Beauty Consulting",
-      description: "Personalized beauty consultations to help you find the right products and routines.",
+      title: "Personalized Beauty Consultation",
+      description: "Discover your perfect skincare routine with a comprehensive analysis and custom product recommendations tailored to your unique skin needs.",
       delay: 0.5
     }
   ];
@@ -50,9 +50,9 @@ const Services = () => {
     <section id="services" className="section-padding bg-gray-50">
       <div className="container-custom">
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif font-medium mb-4 animate-fade-in">Our Beauty Services</h2>
+          <h2 className="text-3xl md:text-4xl font-serif font-medium mb-4 animate-fade-in">Premium Beauty Services</h2>
           <p className="text-gray-600 max-w-2xl mx-auto animate-fade-in" style={{animationDelay: '0.1s'}}>
-            Discover our range of personalized beauty treatments designed to enhance your natural beauty and boost your confidence.
+            Each treatment is customized to enhance your natural beauty using luxury products and cutting-edge techniques perfected over 15 years in the industry.
           </p>
         </div>
         
