@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Calendar } from "@/components/ui/calendar";
@@ -8,20 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Check, CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { useBooking } from "@/contexts/BookingContext";
 
 interface BookingSheetProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-const AVAILABLE_TIMES = [
-  "10:00 AM",
-  "11:30 AM",
-  "1:00 PM",
-  "2:30 PM",
-  "4:00 PM",
-  "5:30 PM",
-];
 
 const SERVICES = [
   "Signature Facial",
@@ -34,6 +25,7 @@ const SERVICES = [
 
 const BookingSheet = ({ isOpen, onClose }: BookingSheetProps) => {
   const { toast } = useToast();
+  const { getAvailableTimesForDate } = useBooking();
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState<string | null>(null);
   const [service, setService] = useState<string | null>(null);
@@ -43,6 +35,19 @@ const BookingSheet = ({ isOpen, onClose }: BookingSheetProps) => {
   const [notes, setNotes] = useState("");
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [availableTimesForSelectedDate, setAvailableTimesForSelectedDate] = useState<string[]>([]);
+
+  const handleDateChange = (newDate: Date | undefined) => {
+    setDate(newDate);
+    setTime(null); // Reset time when date changes
+    
+    if (newDate) {
+      const times = getAvailableTimesForDate(newDate);
+      setAvailableTimesForSelectedDate(times);
+    } else {
+      setAvailableTimesForSelectedDate([]);
+    }
+  };
 
   const handleNextStep = () => {
     if (step === 1 && !date) {
@@ -146,22 +151,23 @@ const BookingSheet = ({ isOpen, onClose }: BookingSheetProps) => {
               <Calendar
                 mode="single"
                 selected={date}
-                onSelect={setDate}
+                onSelect={handleDateChange}
                 className="rounded-md border mx-auto"
                 disabled={(date) => {
-                  // Disable Sundays, Mondays, and dates before today
+                  // Disable days with no available times and dates before today
                   const day = date.getDay();
                   const today = new Date();
                   today.setHours(0, 0, 0, 0);
-                  return date < today || day === 0 || day === 1;
+                  const availableTimes = getAvailableTimesForDate(date);
+                  return date < today || availableTimes.length === 0;
                 }}
               />
               
-              {date && (
+              {date && availableTimesForSelectedDate.length > 0 && (
                 <div className="animate-fade-in">
                   <h3 className="text-sm font-medium mb-2">Available Times for {format(date, "MMMM d, yyyy")}</h3>
                   <div className="grid grid-cols-2 gap-2">
-                    {AVAILABLE_TIMES.map((availableTime) => (
+                    {availableTimesForSelectedDate.map((availableTime) => (
                       <button
                         key={availableTime}
                         onClick={() => setTime(availableTime)}
@@ -175,6 +181,12 @@ const BookingSheet = ({ isOpen, onClose }: BookingSheetProps) => {
                       </button>
                     ))}
                   </div>
+                </div>
+              )}
+              
+              {date && availableTimesForSelectedDate.length === 0 && (
+                <div className="text-center p-4 bg-red-50 text-red-600 rounded-md">
+                  No available time slots for the selected date.
                 </div>
               )}
             </div>
