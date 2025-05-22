@@ -2,10 +2,12 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
+import { useBooking } from "@/contexts/BookingContext";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { openBooking } = useBooking();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,7 +51,11 @@ const Navbar = () => {
             <a href="#contact" className="text-sm font-medium hover:text-beauty-500 transition-colors">
               Contact
             </a>
-            <Button size="sm" className="bg-beauty-500 hover:bg-beauty-600">
+            <Button 
+              size="sm" 
+              className="bg-beauty-500 hover:bg-beauty-600"
+              onClick={openBooking}
+            >
               Book Consultation
             </Button>
           </div>
@@ -97,7 +103,10 @@ const Navbar = () => {
               <Button 
                 size="sm" 
                 className="bg-beauty-500 hover:bg-beauty-600 w-full"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  openBooking();
+                }}
               >
                 Book Consultation
               </Button>

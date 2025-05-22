@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { useBooking } from "@/contexts/BookingContext";
 
 const Contact = () => {
   const { toast } = useToast();
+  const { openBooking } = useBooking();
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +57,12 @@ const Contact = () => {
                   Studio: (310) 555-8732<br />
                   For urgent inquiries: (310) 555-9014
                 </p>
+              </div>
+              
+              <div className="pt-2">
+                <Button onClick={openBooking} className="bg-beauty-500 hover:bg-beauty-600">
+                  Book an Appointment
+                </Button>
               </div>
             </div>
           </div>

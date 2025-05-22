@@ -1,7 +1,10 @@
 
 import { Button } from "@/components/ui/button";
+import { useBooking } from "@/contexts/BookingContext";
 
 const Hero = () => {
+  const { openBooking } = useBooking();
+
   return (
     <section className="pt-32 pb-24 md:pt-48 md:pb-32 bg-gradient-to-r from-beauty-50 to-gold-50">
       <div className="container-custom">
@@ -15,7 +18,11 @@ const Hero = () => {
               At Serenity Beauty Studio, we combine luxury skincare with advanced techniques for results that speak for themselves. Your journey to radiant skin starts here.
             </p>
             <div className="flex flex-wrap gap-4 animate-fade-in" style={{animationDelay: '0.6s'}}>
-              <Button size="lg" className="bg-beauty-500 hover:bg-beauty-600">
+              <Button 
+                size="lg" 
+                className="bg-beauty-500 hover:bg-beauty-600"
+                onClick={openBooking}
+              >
                 Book Consultation
               </Button>
               <Button size="lg" variant="outline" className="border-beauty-300 text-beauty-800 hover:bg-beauty-50">
