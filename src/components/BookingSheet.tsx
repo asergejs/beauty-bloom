@@ -1,31 +1,20 @@
+
 import { useState } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Check, CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { useBooking } from "@/contexts/BookingContext";
+import DateTimeSelector from "./booking/DateTimeSelector";
+import ServiceSelector from "./booking/ServiceSelector";
+import ContactForm from "./booking/ContactForm";
 
 interface BookingSheetProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const SERVICES = [
-  "Signature Facial",
-  "Advanced Skin Analysis",
-  "Anti-Aging Treatment",
-  "Hydrating Glow Boost",
-  "Acne Management",
-  "Customized Consultation"
-];
-
 const BookingSheet = ({ isOpen, onClose }: BookingSheetProps) => {
   const { toast } = useToast();
-  const { getAvailableTimesForDate } = useBooking();
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState<string | null>(null);
   const [service, setService] = useState<string | null>(null);
@@ -35,18 +24,10 @@ const BookingSheet = ({ isOpen, onClose }: BookingSheetProps) => {
   const [notes, setNotes] = useState("");
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [availableTimesForSelectedDate, setAvailableTimesForSelectedDate] = useState<string[]>([]);
 
   const handleDateChange = (newDate: Date | undefined) => {
     setDate(newDate);
     setTime(null); // Reset time when date changes
-    
-    if (newDate) {
-      const times = getAvailableTimesForDate(newDate);
-      setAvailableTimesForSelectedDate(times);
-    } else {
-      setAvailableTimesForSelectedDate([]);
-    }
   };
 
   const handleNextStep = () => {
@@ -146,139 +127,36 @@ const BookingSheet = ({ isOpen, onClose }: BookingSheetProps) => {
         
         <div className="space-y-6">
           {step === 1 && (
-            <div className="space-y-4 animate-fade-in">
-              <h3 className="text-sm font-medium mb-2">Select Date & Time</h3>
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={handleDateChange}
-                className="rounded-md border mx-auto"
-                disabled={(date) => {
-                  // Disable days with no available times and dates before today
-                  const day = date.getDay();
-                  const today = new Date();
-                  today.setHours(0, 0, 0, 0);
-                  const availableTimes = getAvailableTimesForDate(date);
-                  return date < today || availableTimes.length === 0;
-                }}
-              />
-              
-              {date && availableTimesForSelectedDate.length > 0 && (
-                <div className="animate-fade-in">
-                  <h3 className="text-sm font-medium mb-2">Available Times for {format(date, "MMMM d, yyyy")}</h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    {availableTimesForSelectedDate.map((availableTime) => (
-                      <button
-                        key={availableTime}
-                        onClick={() => setTime(availableTime)}
-                        className={`p-2 text-sm rounded-md transition ${
-                          time === availableTime
-                            ? "bg-beauty-500 text-white"
-                            : "bg-beauty-50 hover:bg-beauty-100"
-                        }`}
-                      >
-                        {availableTime}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {date && availableTimesForSelectedDate.length === 0 && (
-                <div className="text-center p-4 bg-red-50 text-red-600 rounded-md">
-                  No available time slots for the selected date.
-                </div>
-              )}
-            </div>
+            <DateTimeSelector 
+              date={date}
+              time={time}
+              onDateChange={handleDateChange}
+              onTimeChange={setTime}
+            />
           )}
           
           {step === 2 && (
-            <div className="space-y-4 animate-fade-in">
-              <h3 className="text-sm font-medium mb-2">Select Service</h3>
-              <div className="grid grid-cols-1 gap-2">
-                {SERVICES.map((availableService) => (
-                  <button
-                    key={availableService}
-                    onClick={() => setService(availableService)}
-                    className={`p-3 text-left rounded-md transition flex justify-between items-center ${
-                      service === availableService
-                        ? "bg-beauty-500 text-white"
-                        : "bg-beauty-50 hover:bg-beauty-100"
-                    }`}
-                  >
-                    <span>{availableService}</span>
-                    {service === availableService && <Check size={16} />}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <ServiceSelector 
+              service={service}
+              onServiceChange={setService}
+            />
           )}
           
           {step === 3 && (
-            <form onSubmit={handleSubmit} className="space-y-4 animate-fade-in">
-              <h3 className="text-sm font-medium mb-2">Your Information</h3>
-              
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="text-sm block mb-1">
-                    Full Name *
-                  </label>
-                  <Input
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="text-sm block mb-1">
-                    Email Address *
-                  </label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="phone" className="text-sm block mb-1">
-                    Phone Number *
-                  </label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="notes" className="text-sm block mb-1">
-                    Special Requests (optional)
-                  </label>
-                  <Textarea
-                    id="notes"
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                    rows={3}
-                  />
-                </div>
-                
-                <div className="pt-2">
-                  <p className="text-sm font-medium">Appointment Summary:</p>
-                  <div className="bg-beauty-50 p-3 rounded-md mt-2 space-y-1 text-sm">
-                    <p><span className="font-medium">Service:</span> {service}</p>
-                    <p><span className="font-medium">Date:</span> {date && format(date, "MMMM d, yyyy")}</p>
-                    <p><span className="font-medium">Time:</span> {time}</p>
-                  </div>
-                </div>
-              </div>
-            </form>
+            <ContactForm
+              name={name}
+              email={email}
+              phone={phone}
+              notes={notes}
+              service={service}
+              date={date}
+              time={time}
+              onNameChange={setName}
+              onEmailChange={setEmail}
+              onPhoneChange={setPhone}
+              onNotesChange={setNotes}
+              onSubmit={handleSubmit}
+            />
           )}
           
           <div className="flex justify-between pt-4">
